@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>PRAKTIK 9_YUNELLA</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      width: 80%;
+      margin-bottom: 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #ff5e62;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff5e62;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #d6454d;
+      transition: 0.2s;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background-color: #ff3d43;
+      transform: translateY(-2px);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    li {
+      background: #f1f1f1;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hapus-btn {
+      background-color: #ff4d4d;
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Input Nama</h2>
+    <input type="text" id="inputNama" placeholder="Masukkan nama">
+    <br>
+    <button id="tambahBtn">Tambah ke Daftar</button>
+
+    <div id="daftar">
+      <h3 style="text-align: left;">Daftar Nama :</h3>
+      <ul id="listNama"></ul>
+    </div>
+  </div>
+
+  <script>
+
+    //Gunakan array untuk menyimpan nama-nama
+    let daftarNama = [];
+
+    //Gunakan DOM untuk menampilkan daftar
+    const inputNama = document.getElementById("inputNama");
+    const tombol = document.getElementById("tambahBtn");
+    const listNama = document.getElementById("listNama");
+
+    // Cek apakah data sebelumnya ada di localStorage
+    if (localStorage.getItem("daftarNama")) {
+      daftarNama = JSON.parse(localStorage.getItem("daftarNama"));
+      tampilkanDaftar();
+    }
+
+    //Gunakan addEventListener
+    tombol.addEventListener("click", function () {
+      const nama = inputNama.value.trim();
+
+      if (nama !== "") {
+        daftarNama.push(nama);
+        inputNama.value = "";
+        simpanData();
+        tampilkanDaftar();
+      }
+    });
+
+    function tampilkanDaftar() {
+      listNama.innerHTML = "";
+
+      daftarNama.forEach(function (nama, index) {
+        const li = document.createElement("li");
+        li.textContent = nama;
+
+        const btnHapus = document.createElement("button");
+        btnHapus.textContent = "Hapus";
+        btnHapus.className = "hapus-btn";
+        btnHapus.onclick = function () {
+          daftarNama.splice(index, 1);
+          simpanData();
+          tampilkanDaftar();
+        };
+
+        li.appendChild(btnHapus);
+        listNama.appendChild(li);
+      });
+    }
+
+    function simpanData() {
+      localStorage.setItem("daftarNama", JSON.stringify(daftarNama));
+    }
+  </script>
+
+</body>
+</html>
